@@ -24,7 +24,7 @@ az account set -s <subscription_id>
 
 terraform init
 terraform validate
-terraform plan
+terraform plan -var-file="terraform.tfvars"
 terraform apply -var-file="terraform.tfvars"
 
 ```
