@@ -51,7 +51,7 @@ terraform apply
     - [X] Backend host name bing.com
     - [X] HealthProbe enabled with HTTPS protocol
     - [X] Load balancing set with default config
-    - [X] Backend host voting app
+    - [ ] Backend host voting app
 
 - [X] Frontdoor created with Forwarding Routing Rule
     - [X] Status "enabled"
@@ -68,7 +68,6 @@ terraform apply
 - [ ] Frontdoor created with Https Redirect Routing Rule
     - [ ] Redirect type to "Found"
     - [ ] Redirect protocol "HttpsOnly"
-
 
 ## Resources
 

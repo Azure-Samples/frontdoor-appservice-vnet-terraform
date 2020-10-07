@@ -1,2 +1,2 @@
-rg_name = "demo-fdtf-rg"
-rg_location = "westus"
+rg_name = "<resource-group-name>"
+rg_location = "<azure-resource-location>"
