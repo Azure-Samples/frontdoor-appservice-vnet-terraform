@@ -6,7 +6,7 @@
 
 This project framework provides the following features:
 
-* Feature 1
+* Terraform template with Azure Front Door
 * Feature 2
 * ...
 
@@ -18,7 +18,6 @@ This project framework provides the following features:
 
 - [Terraform](https://www.terraform.io/downloads.html)
 - [Azure CLI](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli)
-- ...
 
 ### Installation
 
@@ -29,7 +28,7 @@ This project framework provides the following features:
 - ...
 
 ### Quickstart
-There are [different ways](https://www.terraform.io/docs/providers/azurerm/guides/service_principal_client_secret.html) to authenticate with the Azure provider from Terraform. This example uses a Service Principal to authenticate. 
+There are [different ways](https://www.terraform.io/docs/providers/azurerm/guides/service_principal_client_secret.html) to authenticate with the Azure provider via Terraform. This example uses a Service Principal with a Client Secret to authenticate. 
 
 1. git clone [repository clone url]
 2. cd [respository name]
@@ -62,6 +61,6 @@ To run the demo, follow these steps:
 
 (Any additional resources or related projects)
 
-- Link to supporting information
+- [Azure Provider: Authenticating using a Service Principal with a Client Secret](https://www.terraform.io/docs/providers/azurerm/guides/service_principal_client_secret.html)
 - Link to similar sample
 - ...
