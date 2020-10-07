@@ -1,2 +1,2 @@
 rg_name = "demo-fdtf-rg"
-rg_location = "WestUS"
+rg_location = "westus"

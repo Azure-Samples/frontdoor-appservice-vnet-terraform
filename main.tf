@@ -31,7 +31,7 @@ resource "azurerm_frontdoor_firewall_policy" "demowafpolicy" {
     match_condition {
       match_variable     = "RemoteAddr"
       operator           = "IPMatch"
-      negation_condition = false
+      negation_condition = true
       match_values       = ["98.207.35.44", "108.255.198.204", "71.36.63.214", "98.234.150.145" ]
     }
   }
