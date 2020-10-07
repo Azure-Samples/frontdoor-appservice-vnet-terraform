@@ -1,6 +1,6 @@
 # Project Name
 
-This project provides a sample terraform script for provisioning a WAF enabled frontdoor with backend pools set with an existing app service, routing rules with  caching config exposed on a private vnet
+This project provides a sample terraform script for provisioning a WAF enabled frontdoor with backend pools set with an existing Azure App service, routing rules with  caching config exposed on a private vnet
 
 ## Getting Started
 
