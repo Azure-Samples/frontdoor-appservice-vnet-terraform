@@ -16,8 +16,8 @@ This project framework provides the following features:
 
 (ideally very short, if any)
 
-- OS
-- Library version
+- [Terraform](https://www.terraform.io/downloads.html)
+- [Azure CLI](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli)
 - ...
 
 ### Installation
