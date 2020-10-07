@@ -16,50 +16,29 @@ resource "azurerm_frontdoor_firewall_policy" "demowafpolicy" {
   resource_group_name               = azurerm_resource_group.rg.name
   enabled                           = true
   mode                              = "Prevention"
-  redirect_url                      = "https://www.contoso.com"
   custom_block_response_status_code = 403
-  custom_block_response_body        = "PGh0bWw+CjxoZWFkZXI+PHRpdGxlPkhlbGxvPC90aXRsZT48L2hlYWRlcj4KPGJvZHk+CkhlbGxvIHdvcmxkCjwvYm9keT4KPC9odG1sPg=="
+  custom_block_response_body        = "YmxvY2tlZCBieSBmcm9udGRvb3I="
+
+  custom_rule {
+    name                           = "allowip"
+    enabled                        = true
+    priority                       = 1
+    rate_limit_duration_in_minutes = 1
+    rate_limit_threshold           = 10
+    type                           = "MatchRule"
+    action                         = "Block"
+
+    match_condition {
+      match_variable     = "RemoteAddr"
+      operator           = "IPMatch"
+      negation_condition = false
+      match_values       = ["98.207.35.44", "108.255.198.204", "71.36.63.214", "98.234.150.145" ]
+    }
+  }
 
   managed_rule {
     type    = "DefaultRuleSet"
     version = "1.0"
-
-    exclusion {
-      match_variable = "QueryStringArgNames"
-      operator       = "Equals"
-      selector       = "not_suspicious"
-    }
-
-    override {
-      rule_group_name = "PHP"
-
-      rule {
-        rule_id = "933100"
-        enabled = false
-        action  = "Block"
-      }
-    }
-
-    override {
-      rule_group_name = "SQLI"
-
-      exclusion {
-        match_variable = "QueryStringArgNames"
-        operator       = "Equals"
-        selector       = "really_not_suspicious"
-      }
-
-      rule {
-        rule_id = "942200"
-        action  = "Block"
-
-        exclusion {
-          match_variable = "QueryStringArgNames"
-          operator       = "Equals"
-          selector       = "innocent"
-        }
-      }
-    }
   }
 
   managed_rule {
@@ -68,34 +47,38 @@ resource "azurerm_frontdoor_firewall_policy" "demowafpolicy" {
   }
 }
 
-
 resource "azurerm_frontdoor" "rocketdemofd" {
   name                                         = "rocketdemofd"
   resource_group_name                          = azurerm_resource_group.rg.name
   enforce_backend_pools_certificate_name_check = false
 
   routing_rule {
-    name               = "exampleRoutingRule1"
-    accepted_protocols = ["Http", "Https"]
+    name               = "rocketDemoRoutingRule1"
+    accepted_protocols = ["Https"]
     patterns_to_match  = ["/*"]
     frontend_endpoints = ["rocketdemofd"]
     forwarding_configuration {
-      forwarding_protocol = "MatchRequest"
-      backend_pool_name   = "exampleBackendBing"
+      forwarding_protocol = "HttpsOnly"
+      backend_pool_name   = "rocketDemoBackendBing"
       cache_enabled = true
+      cache_query_parameter_strip_directive = "StripNone"
+      cache_use_dynamic_compression         = true  
     }
+
   }
 
   backend_pool_load_balancing {
-    name = "exampleLoadBalancingSettings1"
+    name = "rocketDemoLoadBalancingSettings1"
+
   }
 
   backend_pool_health_probe {
-    name = "exampleHealthProbeSetting1"
+    name = "rocketDemoHealthProbeSetting1"
+    protocol              = "Https"
   }
 
   backend_pool {
-    name = "exampleBackendBing"
+    name = "rocketDemoBackendBing"
     backend {
       host_header = "www.bing.com"
       address     = "www.bing.com"
@@ -103,8 +86,8 @@ resource "azurerm_frontdoor" "rocketdemofd" {
       https_port  = 443
     }
 
-    load_balancing_name = "exampleLoadBalancingSettings1"
-    health_probe_name   = "exampleHealthProbeSetting1"
+    load_balancing_name = "rocketDemoLoadBalancingSettings1"
+    health_probe_name   = "rocketDemoHealthProbeSetting1"
   }
 
   frontend_endpoint {
