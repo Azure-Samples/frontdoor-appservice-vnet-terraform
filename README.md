@@ -1,66 +1,84 @@
 # Project Name
 
-(short, 1-3 sentenced, description of the project)
-
-## Features
-
-This project framework provides the following features:
-
-* Terraform template with Azure Front Door
-* Feature 2
-* ...
+This project provides a sample terraform script for provisioning a WAF enabled frontdoor with backend pools set with an existing Azure App service, routing rules with  caching config exposed on a private vnet
 
 ## Getting Started
 
 ### Prerequisites
-
-(ideally very short, if any)
 
 - [Terraform](https://www.terraform.io/downloads.html)
 - [Azure CLI](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli)
 
 ### Installation
 
-(ideally very short)
-
-- npm install [package name]
-- mvn install
-- ...
+``` shell
+git clone https://github.com/Azure-Samples/frontdoor-appservice-vnet-terraform.git
+cd frontdoor-appservice-vnet-terraform
+```
 
 ### Quickstart
+
 There are [different ways](https://www.terraform.io/docs/providers/azurerm/guides/service_principal_client_secret.html) to authenticate with the Azure provider via Terraform. This example uses a Service Principal with a Client Secret to authenticate. 
 
-1. git clone [repository clone url]
-2. cd [respository name]
-3. az ad sp create-for-rbac --role="Contributor" --scopes="/subscriptions/<your-subscription-id>"
-4. Use the values from step 3 to create these environment variables to authenticate with the Azure provider.
-```
+``` shell
+az login
+az account set -s <subscription_id>
+az ad sp create-for-rbac --role="Contributor" --scopes="/subscriptions/<your-subscription-id>"
+
 export ARM_SUBSCRIPTION_ID=<subscription-id>
 export ARM_CLIENT_ID=<app-id>
 export ARM_CLIENT_SECRET=<password>
 export ARM_TENANT_ID=<tenant-id>
-```
-5. terraform init
-6. terraform plan -var-file="terraform.tfvars"
-7. terraform apply -var-file="terraform.tfvars"
 
+terraform init
+terraform validate
+terraform plan -var-file="terraform.tfvars"
+terraform apply -var-file="terraform.tfvars"
+
+```
 
 ## Demo
 
-A demo app is included to show how to use the project.
+### Validate Frontdoor from the Azure Portal
 
-To run the demo, follow these steps:
+- [ ] Private VNET with specified name is created
 
-(Add steps to start up the demo)
+- [X] Resource group with specified name is created
 
-1.
-2.
-3.
+- [X] Frontdoor Global WAF is created with following config
+    - [X] Prevention Policy Settings 
+    - [X] Managed Rules  as DefaultRuleSet_1.0 and Microsoft_BotManagerRuleSet_1.0
+    - [X] Custom Rules to deny traffic to non allowable IPs
+
+- [X] Frontdoor is created with following config
+    - [X] Frontdoor endpoint is created
+    - [X] SESSION AFFINITY disabled
+    - [X] WAF enabled and associated with created WAF
+        
+- [X] Backendpool is created
+    - [X] Backend host name bing.com
+    - [X] HealthProbe enabled with HTTPS protocol
+    - [X] Load balancing set with default config
+    - [ ] Backend host voting app
+
+- [X] Frontdoor created with Forwarding Routing Rule
+    - [X] Status "enabled"
+    - [X] Accepted Protocol HTTPS
+    - [X] Pattern to match a /*
+    - [X] Route Type Forward
+    - [X] Backendpool is set
+    - [X] Forwarding Protocol HttpsOnly request
+    - [X] URL Rewrite disabled
+    - [X] Caching enabled and query string behavior is set to "Cache Every Unique URL"
+    - [X] Dynamic compression "enables"
+    - [X] Use default cache duration "Yes"
+
+- [ ] Frontdoor created with Https Redirect Routing Rule
+    - [ ] Redirect type to "Found"
+    - [ ] Redirect protocol "HttpsOnly"
 
 ## Resources
 
-(Any additional resources or related projects)
-
 - [Azure Provider: Authenticating using a Service Principal with a Client Secret](https://www.terraform.io/docs/providers/azurerm/guides/service_principal_client_secret.html)
-- Link to similar sample
-- ...
+- [Frontdoor Terraform](https://www.terraform.io/docs/providers/azurerm/r/frontdoor.html#example-usage)
+- [Azure Frontdoor](https://azure.microsoft.com/en-us/services/frontdoor/)
