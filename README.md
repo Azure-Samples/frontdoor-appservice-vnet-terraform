@@ -33,8 +33,6 @@ terraform apply -var-file="terraform.tfvars"
 
 ### Validate Frontdoor from the Azure Portal
 
-- [ ] Private VNET with specified name is created
-
 - [X] Resource group with specified name is created
 
 - [X] Frontdoor Global WAF is created with following config
@@ -51,7 +49,6 @@ terraform apply -var-file="terraform.tfvars"
     - [X] Backend host name bing.com
     - [X] HealthProbe enabled with HTTPS protocol
     - [X] Load balancing set with default config
-    - [ ] Backend host voting app
 
 - [X] Frontdoor created with Forwarding Routing Rule
     - [X] Status "enabled"
@@ -65,9 +62,15 @@ terraform apply -var-file="terraform.tfvars"
     - [X] Dynamic compression "enables"
     - [X] Use default cache duration "Yes"
 
-- [ ] Frontdoor created with Https Redirect Routing Rule
-    - [ ] Redirect type to "Found"
-    - [ ] Redirect protocol "HttpsOnly"
+- [X] Frontdoor created with Https Redirect Routing Rule
+    - [X] Redirect type to "Found"
+    - [X] Redirect protocol "HttpsOnly"
+
+## GitHub Issues Created
+
+- [Feature Request: Support for Config Backend Host Type in backendpool to support "Public IP Address"](https://github.com/terraform-providers/terraform-provider-azurerm/issues/8809)
+- [Bug : Unable to get multiple routing rules working with the same backend pool](https://github.com/terraform-providers/terraform-provider-azurerm/issues/8858)
+- [Frontdoor cannot be created in VNET needs publicly resolvable IP Address](https://github.com/MicrosoftDocs/azure-docs/issues/17639)
 
 ## Resources
 
