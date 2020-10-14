@@ -37,8 +37,6 @@ resource "azurerm_app_service" "apsvc" {
 
   app_settings = {
     "DOCKER_REGISTRY_SERVER_URL" = "https://mcr.microsoft.com",
-    "DOCKER_REGISTRY_SERVER_USERNAME" = "",
-    "DOCKER_REGISTRY_SERVER_PASSWORD" = "",
   }
 }
 
@@ -90,7 +88,7 @@ resource "azurerm_frontdoor" "rocketdemofd" {
     frontend_endpoints = ["rocketdemofd"]
     forwarding_configuration {
       forwarding_protocol = "HttpsOnly"
-      backend_pool_name   = "rocketDemoBackendBing"
+      backend_pool_name   = "rocketDemoBackendVoting"
       cache_enabled = true
       cache_query_parameter_strip_directive = "StripNone"
       cache_use_dynamic_compression         = true  
@@ -111,8 +109,8 @@ resource "azurerm_frontdoor" "rocketdemofd" {
   backend_pool {
     name = "rocketDemoBackendBing"
     backend {
-      host_header = "www.bing.com"
-      address     = "www.bing.com"
+      host_header = "rocket-appservice.azurewebsites.net"
+      address     = "rocket-appservice.azurewebsites.net"
       http_port   = 80
       https_port  = 443
     }
