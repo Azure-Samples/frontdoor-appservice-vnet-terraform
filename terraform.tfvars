@@ -1,15 +1,6 @@
-/*rg_name = "<resource-group-name>"
+rg_name = "<resource-group-name>"
 rg_location = "<azure-resource-location>"
 app_svc_plan = "<azure-app-service-plan>"
 app_svc_plan_sku_tier = "<app_svc_plan_sku_tier>"
 app_svc_plan_sku_size = "<app_svc_plan_sku_size>"
 app_svc_name = "<azure-app-service-name>"
-*/
-
-rg_name = "voting-rg"
-rg_location = "westus"
-app_svc_plan = "voting-app-svc-plan"
-app_svc_plan_sku_tier = "Standard"
-app_svc_plan_sku_size = "S1"
-app_svc_name = "voting-app"
-front_end_point = "votingdemofd"
