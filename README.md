@@ -1,6 +1,6 @@
-# Project Name
+# Frontdoor terraform script with App Service
 
-This project provides a sample terraform script for provisioning a WAF enabled frontdoor with backend pools set with an existing Azure App service, routing rules with  caching config exposed on a private vnet
+This project provides a end to end terraform script for provisioning a WAF enabled frontdoor with backend pools set with an existing Azure App service, routing rules with  caching config. The script provisions an existing voting App from https://github.com/Azure-Samples/azure-voting-app-redis and limits access to this backend from Azure Frontdoor.
 
 ## Getting Started
 
