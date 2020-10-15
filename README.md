@@ -1,4 +1,4 @@
-# Frontdoor terraform script with App Service
+# Azure Front Door and App Service Terraform script
 
 This project provides a end to end terraform script for provisioning a WAF enabled frontdoor with backend pools set with an existing Azure App service, routing rules with  caching config. The script provisions an existing voting App from https://github.com/Azure-Samples/azure-voting-app-redis and limits access to this backend from Azure Frontdoor.
 
@@ -79,3 +79,4 @@ terraform apply -var-file="terraform.tfvars"
 
 - [Frontdoor Terraform](https://www.terraform.io/docs/providers/azurerm/r/frontdoor.html#example-usage)
 - [Azure Frontdoor](https://azure.microsoft.com/en-us/services/frontdoor/)
+- [Limit access to Backend from Azure Frontdoor](https://docs.microsoft.com/en-us/azure/frontdoor/front-door-faq#how-do-i-lock-down-the-access-to-my-backend-to-only-azure-front-door)
