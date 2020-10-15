@@ -12,23 +12,20 @@ resource "azurerm_resource_group" "rg" {
 }
 
 resource "azurerm_app_service_plan" "asp" {
-  name                = "rocket-asp"
+  name                = var.app_svc_plan 
   location            = azurerm_resource_group.rg.location
   resource_group_name = azurerm_resource_group.rg.name
   kind                = "Linux"
   reserved            = true
 
   sku {
-    tier = "Standard"
-    size = "S1"
+    tier = var.app_svc_plan_sku_tier 
+    size = var.app_svc_plan_sku_size 
   }
 }
 
-/* Provision existing voting App from https://github.com/Azure-Samples/azure-voting-app-redis */
-/* Limit access to the App Service from FrontDoor Only */
-
 resource "azurerm_app_service" "apsvc" {
-  name                = "rocket-appservice"
+  name                = var.app_svc_name 
   location            = azurerm_resource_group.rg.location
   resource_group_name = azurerm_resource_group.rg.name
   app_service_plan_id = azurerm_app_service_plan.asp.id
@@ -36,7 +33,11 @@ resource "azurerm_app_service" "apsvc" {
   site_config {   
     /* Provision voting App from https://github.com/Azure-Samples/azure-voting-app-redis */
     linux_fx_version = "COMPOSE|${filebase64("docker-compose.yaml")}"
-    /* App Service access limited to FrontDoor Only */
+    /* 
+    App Service access limited to FrontDoor Only
+    Following are Internal Azure IPs for Frontend Backend and Azure Services from docs here
+    https://docs.microsoft.com/en-us/azure/frontdoor/front-door-faq#how-do-i-lock-down-the-access-to-my-backend-to-only-azure-front-door
+    */
 
     ip_restriction = [
       {
@@ -84,7 +85,13 @@ resource "azurerm_frontdoor_firewall_policy" "demowafpolicy" {
   resource_group_name               = azurerm_resource_group.rg.name
   enabled                           = true
   mode                              = "Prevention"
-  custom_block_response_status_code = 403
+  custom_block_response_status_code = 403 
+  /*
+
+  custom_block_response_body takes in is a base 64 encoded string, hence this is the base 64 encoded string for 
+  "blocked by frontdoor"
+
+  */
   custom_block_response_body        = "YmxvY2tlZCBieSBmcm9udGRvb3I="
 
   managed_rule {
@@ -98,19 +105,22 @@ resource "azurerm_frontdoor_firewall_policy" "demowafpolicy" {
   }
 }
 
-resource "azurerm_frontdoor" "rocketdemofd" {
-  name                                         = "rocketdemofd"
+/* Bug/Limitation name of the front door resoure (votingdemofd) has has to be same frontend_endpoint name
+https://github.com/terraform-providers/terraform-provider-azurerm/issues/4495
+*/
+resource "azurerm_frontdoor" "votingdemofd" {
+  name                                         = var.front_end_point
   resource_group_name                          = azurerm_resource_group.rg.name
   enforce_backend_pools_certificate_name_check = false
 
   routing_rule {
-    name               = "rocketDemoRoutingRule1"
+    name               = "votingDemoRoutingRule1"
     accepted_protocols = ["Https"]
     patterns_to_match  = ["/*"]
-    frontend_endpoints = ["rocketdemofd"]
+    frontend_endpoints = [var.front_end_point]
     forwarding_configuration {
       forwarding_protocol = "HttpsOnly"
-      backend_pool_name   = "rocketDemoBackendVoting"
+      backend_pool_name   = "votingDemoBackend"
       cache_enabled = true
       cache_query_parameter_strip_directive = "StripNone"
       cache_use_dynamic_compression         = true  
@@ -119,31 +129,31 @@ resource "azurerm_frontdoor" "rocketdemofd" {
   }
 
   backend_pool_load_balancing {
-    name = "rocketDemoLoadBalancingSettings1"
+    name = "votingDemoLoadBalancingSettings1"
 
   }
 
   backend_pool_health_probe {
-    name = "rocketDemoHealthProbeSetting1"
+    name = "votingDemoHealthProbeSetting1"
     protocol              = "Https"
   }
 
   backend_pool {
-    name = "rocketDemoBackendVoting"
+    name = "votingDemoBackend"
     backend {
-      host_header = "rocket-appservice.azurewebsites.net"
-      address     = "rocket-appservice.azurewebsites.net"
-      http_port   = 80
-      https_port  = 443
+      host_header = "${var.app_svc_name}.azurewebsites.net" 
+      address = "${var.app_svc_name}.azurewebsites.net" 
+      http_port   =  80
+      https_port  =  443
     }
 
-    load_balancing_name = "rocketDemoLoadBalancingSettings1"
-    health_probe_name   = "rocketDemoHealthProbeSetting1"
+    load_balancing_name = "votingDemoLoadBalancingSettings1"
+    health_probe_name   = "votingDemoHealthProbeSetting1"
   }
 
   frontend_endpoint {
-    name                              = "rocketdemofd"
-    host_name                         = "rocketdemofd.azurefd.net"
+    name                              = var.front_end_point //bug 4495 "votingdemofd"
+    host_name                         = "${var.front_end_point}.azurefd.net"
     session_affinity_enabled          = false 
     session_affinity_ttl_seconds      = 0     
     custom_https_provisioning_enabled = false

@@ -1,6 +1,13 @@
-# Azure Front Door and App Service Terraform script
+# Using Terraform to deploy and configure Azure Front Door with an Azure App Service
 
-This project provides a end to end terraform script for provisioning a WAF enabled frontdoor with backend pools set with an existing Azure App service, routing rules with  caching config. The script provisions an existing voting App from https://github.com/Azure-Samples/azure-voting-app-redis and limits access to this backend from Azure Frontdoor.
+This project end to end terraform scripts for provisioning a WAF enabled Azure Front Door with backend pools set with an existing Azure App service, routing rules with caching config.
+
+These scripts:
+
+Provision an Azure Front Door with Web Application Firewall (WAF) enabled
+Provision a sample application on Azure App Service(Azure Vote - https://github.com/Azure-Samples/azure-voting-app-redis)
+Configures Front Door to route traffic to the App Service with caching configuration
+Places limits on inbound traffic to the App Service to be limited to Azure Infrastructure
 
 ## Getting Started
 
@@ -74,6 +81,7 @@ terraform apply -var-file="terraform.tfvars"
 - [Feature Request: Support for Config Backend Host Type in backendpool to support "Public IP Address"](https://github.com/terraform-providers/terraform-provider-azurerm/issues/8809)
 - [Bug : Unable to get multiple routing rules working with the same backend pool](https://github.com/terraform-providers/terraform-provider-azurerm/issues/8858)
 - [Frontdoor cannot be created in VNET needs publicly resolvable IP Address](https://github.com/MicrosoftDocs/azure-docs/issues/17639)
+- [Azure Front Door resource name has to be the same name as that of front end host](https://github.com/terraform-providers/terraform-provider-azurerm/issues/4495)
 
 ## Resources
 
