@@ -35,6 +35,10 @@ terraform apply -var-file="terraform.tfvars"
 
 - [X] Resource group with specified name is created
 
+- [X] Provision Voting App from https://github.com/Azure-Samples/azure-voting-app-redis
+    - [X] Provision Voting App from docker-compose.yaml
+    - [X] Limit Access to the Voting App from frontdoor only
+    
 - [X] Frontdoor Global WAF is created with following config
     - [X] Prevention Policy Settings 
     - [X] Managed Rules  as DefaultRuleSet_1.0 and Microsoft_BotManagerRuleSet_1.0
