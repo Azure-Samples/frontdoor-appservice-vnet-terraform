@@ -24,6 +24,8 @@ resource "azurerm_app_service_plan" "asp" {
   }
 }
 
+/* Provision existing voting App from https://github.com/Azure-Samples/azure-voting-app-redis */
+/* Limit access to the App Service from FrontDoor Only */
 
 resource "azurerm_app_service" "apsvc" {
   name                = "rocket-appservice"
@@ -31,8 +33,45 @@ resource "azurerm_app_service" "apsvc" {
   resource_group_name = azurerm_resource_group.rg.name
   app_service_plan_id = azurerm_app_service_plan.asp.id
 
-  site_config {
+  site_config {   
+    /* Provision voting App from https://github.com/Azure-Samples/azure-voting-app-redis */
     linux_fx_version = "COMPOSE|${filebase64("docker-compose.yaml")}"
+    /* App Service access limited to FrontDoor Only */
+
+    ip_restriction = [
+      {
+        ip_address                = "147.243.0.0/16",
+        virtual_network_subnet_id = null
+        subnet_id                 = null
+        name                      = "allowfrontdooripv4"
+        description               = "allowfrontdooripv4"
+        priority                  = 300
+        action                    = "Allow"
+      },{
+        ip_address                = "2a01:111:2050::/44",
+        virtual_network_subnet_id = null
+        subnet_id                 = null
+        name                      = "allowfrontdooripv6"
+        description               = "allowfrontdooripv6"
+        priority                  = 350
+        action                    = "Allow"
+      },{
+        ip_address                = "168.63.129.16/32",
+        virtual_network_subnet_id = null
+        subnet_id                 = null
+        name                      = "azureinfrasvcstart"
+        description               = "azureinfrasvcstart"
+        priority                  = 400
+        action                    = "Allow"
+      },{
+        ip_address                = "169.254.169.254/32",
+        virtual_network_subnet_id = null
+        subnet_id                 = null
+        name                      = "azureinfrasvcend "
+        description               = "azureinfrasvcend"
+        priority                  = 450
+        action                    = "Allow"
+      }]
   }
 
   app_settings = {
@@ -47,23 +86,6 @@ resource "azurerm_frontdoor_firewall_policy" "demowafpolicy" {
   mode                              = "Prevention"
   custom_block_response_status_code = 403
   custom_block_response_body        = "YmxvY2tlZCBieSBmcm9udGRvb3I="
-
-  custom_rule {
-    name                           = "allowip"
-    enabled                        = true
-    priority                       = 1
-    rate_limit_duration_in_minutes = 1
-    rate_limit_threshold           = 10
-    type                           = "MatchRule"
-    action                         = "Block"
-
-    match_condition {
-      match_variable     = "RemoteAddr"
-      operator           = "IPMatch"
-      negation_condition = true
-      match_values       = ["98.207.35.44", "108.255.198.204", "71.36.63.214", "98.234.150.145" ]
-    }
-  }
 
   managed_rule {
     type    = "DefaultRuleSet"
@@ -107,7 +129,7 @@ resource "azurerm_frontdoor" "rocketdemofd" {
   }
 
   backend_pool {
-    name = "rocketDemoBackendBing"
+    name = "rocketDemoBackendVoting"
     backend {
       host_header = "rocket-appservice.azurewebsites.net"
       address     = "rocket-appservice.azurewebsites.net"
