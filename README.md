@@ -25,9 +25,17 @@ cd frontdoor-appservice-vnet-terraform
 
 ### Quickstart
 
+There are [different ways](https://www.terraform.io/docs/providers/azurerm/guides/service_principal_client_secret.html) to authenticate with the Azure provider via Terraform. This example uses a Service Principal with a Client Secret to authenticate. 
+
 ``` shell
 az login
 az account set -s <subscription_id>
+az ad sp create-for-rbac --role="Contributor" --scopes="/subscriptions/<your-subscription-id>"
+
+export ARM_SUBSCRIPTION_ID=<subscription-id>
+export ARM_CLIENT_ID=<app-id>
+export ARM_CLIENT_SECRET=<password>
+export ARM_TENANT_ID=<tenant-id>
 
 terraform init
 terraform validate
@@ -85,6 +93,7 @@ terraform apply -var-file="terraform.tfvars"
 
 ## Resources
 
+- [Azure Provider: Authenticating using a Service Principal with a Client Secret](https://www.terraform.io/docs/providers/azurerm/guides/service_principal_client_secret.html)
 - [Frontdoor Terraform](https://www.terraform.io/docs/providers/azurerm/r/frontdoor.html#example-usage)
 - [Azure Frontdoor](https://azure.microsoft.com/en-us/services/frontdoor/)
 - [Limit access to Backend from Azure Frontdoor](https://docs.microsoft.com/en-us/azure/frontdoor/front-door-faq#how-do-i-lock-down-the-access-to-my-backend-to-only-azure-front-door)
