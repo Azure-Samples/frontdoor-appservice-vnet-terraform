@@ -1,13 +1,13 @@
 # Using Terraform to deploy and configure Azure Front Door with an Azure App Service
 
-This project end to end terraform scripts for provisioning a WAF enabled Azure Front Door with backend pools set with an existing Azure App service, routing rules with caching config.
+This project provides end to end terraform scripts for provisioning a WAF enabled Azure Front Door with backend pools set with an existing Azure App service, routing rules with caching config.
 
 These scripts:
 
-Provision an Azure Front Door with Web Application Firewall (WAF) enabled
-Provision a sample application on Azure App Service(Azure Vote - https://github.com/Azure-Samples/azure-voting-app-redis)
-Configures Front Door to route traffic to the App Service with caching configuration
-Places limits on inbound traffic to the App Service to be limited to Azure Infrastructure
+- Provision an Azure Front Door with Web Application Firewall (WAF) enabled
+- Provision a sample application on Azure App Service(Azure Voting App - <https://github.com/Azure-Samples/azure-voting-app-redis>)
+- Configures Front Door to route traffic to the App Service with caching configuration
+- Places limits on inbound traffic to the App Service to be limited to Azure Infrastructure
 
 ## Getting Started
 
@@ -42,39 +42,39 @@ terraform apply -var-file="terraform.tfvars"
 
 - [X] Resource group with specified name is created
 
-- [X] Provision Voting App from https://github.com/Azure-Samples/azure-voting-app-redis
-    - [X] Provision Voting App from docker-compose.yaml
-    - [X] Limit Access to the Voting App from frontdoor only
-    
+- [X] Provision Voting App from <https://github.com/Azure-Samples/azure-voting-app-redis>
+  - [X] Provision Voting App from docker-compose.yaml
+  - [X] Limit Access to the Voting App from frontdoor only
+
 - [X] Frontdoor Global WAF is created with following config
-    - [X] Prevention Policy Settings 
-    - [X] Managed Rules  as DefaultRuleSet_1.0 and Microsoft_BotManagerRuleSet_1.0
+  - [X] Prevention Policy Settings 
+  - [X] Managed Rules  as DefaultRuleSet_1.0 and Microsoft_BotManagerRuleSet_1.0
 
 - [X] Frontdoor is created with following config
-    - [X] Frontdoor endpoint is created
-    - [X] SESSION AFFINITY disabled
-    - [X] WAF enabled and associated with created WAF
-        
+  - [X] Frontdoor endpoint is created
+  - [X] SESSION AFFINITY disabled
+  - [X] WAF enabled and associated with created WAF
+
 - [X] Backendpool is created
-    - [X] Backend host name Voting App
-    - [X] HealthProbe enabled with HTTPS protocol
-    - [X] Load balancing set with default config
+  - [X] Backend host name Voting App
+  - [X] HealthProbe enabled with HTTPS protocol
+  - [X] Load balancing set with default config
 
 - [X] Frontdoor created with Forwarding Routing Rule
-    - [X] Status "enabled"
-    - [X] Accepted Protocol HTTPS
-    - [X] Pattern to match a /*
-    - [X] Route Type Forward
-    - [X] Backendpool is set
-    - [X] Forwarding Protocol HttpsOnly request
-    - [X] URL Rewrite disabled
-    - [X] Caching enabled and query string behavior is set to "Cache Every Unique URL"
-    - [X] Dynamic compression "enabled"
-    - [X] Use default cache duration "Yes"
+  - [X] Status "enabled"
+  - [X] Accepted Protocol HTTPS
+  - [X] Pattern to match a /*
+  - [X] Route Type Forward
+  - [X] Backendpool is set
+  - [X] Forwarding Protocol HttpsOnly request
+  - [X] URL Rewrite disabled
+  - [X] Caching enabled and query string behavior is set to "Cache Every Unique URL"
+  - [X] Dynamic compression "enabled"
+  - [X] Use default cache duration "Yes"
 
 - [X] Frontdoor created with Https Redirect Routing Rule
-    - [X] Redirect type to "Found"
-    - [X] Redirect protocol "HttpsOnly"
+  - [X] Redirect type to "Found"
+  - [X] Redirect protocol "HttpsOnly"
 
 ## GitHub Issues Created
 
