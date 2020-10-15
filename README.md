@@ -42,7 +42,6 @@ terraform apply -var-file="terraform.tfvars"
 - [X] Frontdoor Global WAF is created with following config
     - [X] Prevention Policy Settings 
     - [X] Managed Rules  as DefaultRuleSet_1.0 and Microsoft_BotManagerRuleSet_1.0
-    - [X] Custom Rules to deny traffic to non allowable IPs
 
 - [X] Frontdoor is created with following config
     - [X] Frontdoor endpoint is created
@@ -50,7 +49,7 @@ terraform apply -var-file="terraform.tfvars"
     - [X] WAF enabled and associated with created WAF
         
 - [X] Backendpool is created
-    - [X] Backend host name bing.com
+    - [X] Backend host name Voting App
     - [X] HealthProbe enabled with HTTPS protocol
     - [X] Load balancing set with default config
 
@@ -63,7 +62,7 @@ terraform apply -var-file="terraform.tfvars"
     - [X] Forwarding Protocol HttpsOnly request
     - [X] URL Rewrite disabled
     - [X] Caching enabled and query string behavior is set to "Cache Every Unique URL"
-    - [X] Dynamic compression "enables"
+    - [X] Dynamic compression "enabled"
     - [X] Use default cache duration "Yes"
 
 - [X] Frontdoor created with Https Redirect Routing Rule
