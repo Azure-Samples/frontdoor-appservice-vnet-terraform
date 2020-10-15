@@ -1,2 +1,6 @@
 rg_name = "<resource-group-name>"
 rg_location = "<azure-resource-location>"
+app_svc_plan = "<azure-app-service-plan>"
+app_svc_plan_sku_tier = "<app_svc_plan_sku_tier>"
+app_svc_plan_sku_size = "<app_svc_plan_sku_size>"
+app_svc_name = "<azure-app-service-name>"
