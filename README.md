@@ -90,10 +90,11 @@ terraform apply -var-file="terraform.tfvars"
 - [Bug : Unable to get multiple routing rules working with the same backend pool](https://github.com/terraform-providers/terraform-provider-azurerm/issues/8858)
 - [Frontdoor cannot be created in VNET needs publicly resolvable IP Address](https://github.com/MicrosoftDocs/azure-docs/issues/17639)
 - [Azure Front Door resource name has to be the same name as that of front end host](https://github.com/terraform-providers/terraform-provider-azurerm/issues/4495)
+- [Support for HttpHeader in the terraform schemaAppServiceIpRestriction Schema](https://github.com/terraform-providers/terraform-provider-azurerm/issues/9027)
 
 ## Resources
 
-- [Azure Provider: Authenticating using a Service Principal with a Client Secret](https://www.terraform.io/docs/providers/azurerm/guides/service_principal_client_secret.html)
 - [Frontdoor Terraform](https://www.terraform.io/docs/providers/azurerm/r/frontdoor.html#example-usage)
 - [Azure Frontdoor](https://azure.microsoft.com/en-us/services/frontdoor/)
 - [Limit access to Backend from Azure Frontdoor](https://docs.microsoft.com/en-us/azure/frontdoor/front-door-faq#how-do-i-lock-down-the-access-to-my-backend-to-only-azure-front-door)
+- [Access Restriction HttpHeaders](<https://github.com/madsd/articles/wiki/Access-restriction-HttpHeaders>)
